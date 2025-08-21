@@ -5,6 +5,7 @@
   "dependencies": {
     "@threekit-tools/treble": "0.0.98",
     "@threekit-tools/treble-scripts": "0.0.45",
+    "clsx": "^2.1.1",
     "cors": "2.8.5",
     "express": "5.1.0",
     "morgan": "1.10.1",
