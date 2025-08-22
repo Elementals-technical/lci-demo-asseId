@@ -14,7 +14,7 @@ export const ConfiguratorPage = () => {
   return (
     <div className={s.configuratorPage}>
       <div className={s.playerContent}>
-        {configuratorView === "2D" ? (
+        {configuratorView === "3D" ? (
           <Player />
         ) : (
           <ThreekitIframePlayer
