@@ -5,3 +5,10 @@ body {
   margin: 0;
   font-family: "Roboto", sans-serif;
 }
+
+[data-id="BTN_player_full_screen"],
+[data-id="BTN_player_help"],
+[data-id="arButton"] {
+  user-select: none;
+  visibility: hidden;
+}
