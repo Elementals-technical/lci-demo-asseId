@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import { MainLayout } from "../pages/MainLayout/MainLayout";
 import { FlatForm, Player, PortalToElement } from "@threekit-tools/treble/dist";
+import { ConfiguratorPage } from "../pages/ConfiguratorPage/ConfiguratorPage";
 
 export const router = createBrowserRouter([
   {
@@ -8,29 +9,11 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: (
-          <>
-            <div className="tk-treble-player">
-              <Player />
-            </div>
-            <PortalToElement to="tk-treble-form" strict={true}>
-              <FlatForm />
-            </PortalToElement>
-          </>
-        ),
+        element: <ConfiguratorPage />,
       },
       {
         path: "*",
-        element: (
-          <>
-            <div className="tk-treble-player">
-              <Player />
-            </div>
-            <PortalToElement to="tk-treble-form" strict={true}>
-              <FlatForm />
-            </PortalToElement>
-          </>
-        ),
+        element: <ConfiguratorPage />,
       }, // fallback
     ],
   },
