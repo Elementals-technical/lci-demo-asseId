@@ -8,7 +8,8 @@ body {
 
 [data-id="BTN_player_full_screen"],
 [data-id="BTN_player_help"],
-[data-id="arButton"] {
+[data-id="arButton"],
+[data-id="BTN_player_share_button"] {
   user-select: none;
   visibility: hidden;
 }

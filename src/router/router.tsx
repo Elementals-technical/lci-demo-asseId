@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import { MainLayout } from "../pages/MainLayout/MainLayout";
-import { FlatForm, Player, PortalToElement } from "@threekit-tools/treble/dist";
 import { ConfiguratorPage } from "../pages/ConfiguratorPage/ConfiguratorPage";
+import IframePlayerPage from "../pages/IframePlayerPage/IframePlayerPage";
 
 export const router = createBrowserRouter([
   {
@@ -17,6 +17,6 @@ export const router = createBrowserRouter([
       }, // fallback
     ],
   },
-  { path: "/iframe", element: <>iframe</> },
+  { path: "/iframe", element: <IframePlayerPage /> },
   // { path: "/iframe", element: <IframePlayerPage /> },
 ]);

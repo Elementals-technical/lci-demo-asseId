@@ -2,10 +2,14 @@ import { BtnARIcon } from "../../../assets/img/svg/BtnARIcon";
 import { BtnDimentionsIcon } from "../../../assets/img/svg/BtnDimentionsIcon";
 import { BtnExplodeIcon } from "../../../assets/img/svg/BtnExplodeIcon";
 import { BtnFullScreenIcon } from "../../../assets/img/svg/BtnFullScreenIcon";
+import { getConfiguratorView } from "../../../store/slices/configurator/selectors/selectors";
+import { useAppSelector } from "../../../store/store";
 import Button from "../../Button/Button";
 import s from "./PlayerWidgetBottomRight.module.scss";
 
 export const PlayerWidgetBottomRight = () => {
+  const configuratorView = useAppSelector(getConfiguratorView);
+
   const handleExplode = () => {
     console.log("handleExplode --- ==== ");
   };
@@ -30,9 +34,13 @@ export const PlayerWidgetBottomRight = () => {
 
   return (
     <div className={s.playerWidgetBottomRight}>
-      <Button className={s.btn} iconBefore={<BtnExplodeIcon />} onClick={handleExplode} />
-      <Button className={s.btn} iconBefore={<BtnDimentionsIcon />} onClick={handleDimentions} />
-      <Button className={s.btn} iconBefore={<BtnARIcon />} onClick={handleAR} />
+      {configuratorView === "3D" && (
+        <>
+          <Button className={s.btn} iconBefore={<BtnExplodeIcon />} onClick={handleExplode} />
+          <Button className={s.btn} iconBefore={<BtnDimentionsIcon />} onClick={handleDimentions} />
+          <Button className={s.btn} iconBefore={<BtnARIcon />} onClick={handleAR} />
+        </>
+      )}
       <Button className={s.btn} iconBefore={<BtnFullScreenIcon />} onClick={handleFullScreen} />
     </div>
   );

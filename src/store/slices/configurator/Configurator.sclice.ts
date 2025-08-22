@@ -1,12 +1,9 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { ConfiguratorType } from "./type";
-
-interface ConfiguratorStateI {
-  isProcessing: boolean;
-}
+import { ConfiguratorStateI, ConfiguratorType } from "./type";
 
 const initialState: ConfiguratorStateI = {
   isProcessing: false,
+  configuratorView: "2D",
 };
 
 export const configuratorSlice = createSlice({
@@ -16,9 +13,12 @@ export const configuratorSlice = createSlice({
     changeProcessing: (state, action: PayloadAction<{ isProcessing: boolean }>) => {
       state.isProcessing = action.payload.isProcessing;
     },
+    changeСonfiguratorView: (state, action: PayloadAction<ConfiguratorType>) => {
+      state.configuratorView = action.payload;
+    },
   },
 });
 
-export const { changeProcessing } = configuratorSlice.actions;
+export const { changeProcessing, changeСonfiguratorView } = configuratorSlice.actions;
 
 export default configuratorSlice.reducer;
