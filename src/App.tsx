@@ -1,10 +1,14 @@
 import { ThreekitProvider, Player, PortalToElement, FlatForm, TrebleApp } from "@threekit-tools/treble";
 import { Header } from "./components/Header/Header";
 import { THREEKIT_PARAMS } from "./config/threekit/threekitConfig";
+import { Provider } from "react-redux";
+import { store } from "./store/store";
 
 const App = () => {
   return (
-    <TrebleApp threekitEnv={THREEKIT_PARAMS.THREEKIT_ENV} />
+    <Provider store={store}>
+      <TrebleApp threekitEnv={THREEKIT_PARAMS.THREEKIT_ENV} />
+    </Provider>
 
     // <ThreekitProvider>
     //   <Header />

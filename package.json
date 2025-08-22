@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@reduxjs/toolkit": "^2.8.2",
     "@threekit-tools/treble": "0.0.98",
     "@threekit-tools/treble-scripts": "0.0.45",
     "clsx": "^2.1.1",
@@ -11,6 +12,7 @@
     "morgan": "1.10.1",
     "react": "19.1.1",
     "react-dom": "19.1.1",
+    "react-redux": "^9.2.0",
     "react-router-dom": "^7.8.1"
   },
   "scripts": {
