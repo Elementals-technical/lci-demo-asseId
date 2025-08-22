@@ -10,7 +10,7 @@ export const ConfiguratorPage = () => {
       </div>
       <div className={s.productSettingsContent}>
         <ProductSettings />
-        <FlatForm />
+        {/* <FlatForm /> */}
       </div>
     </div>
   );

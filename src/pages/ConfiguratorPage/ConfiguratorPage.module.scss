@@ -1,13 +1,17 @@
 .configuratorPage {
+  height: 100%;
   display: flex;
   align-items: stretch;
   gap: 40px;
   padding: 0 40px 40px 40px;
   .playerContent {
+    position: relative;
     flex: 1 1 0;
   }
   .productSettingsContent {
+    height: 100%;
     width: 560px;
     min-width: 560px;
+    overflow-y: auto;
   }
 }
