@@ -45,7 +45,7 @@ export default class ThreekitURLGenerator {
     stageId,
     configuration,
     stageConfiguration,
-    cacheDurationHours = 168,
+    cacheDurationHours = 169,
     baseUrl = "https://preview.threekit.com/api/fast-compositor/",
   }: ThreekitURLGeneratorOptions) {
     this.assetId = assetId;
