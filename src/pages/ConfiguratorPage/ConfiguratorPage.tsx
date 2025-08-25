@@ -14,13 +14,14 @@ export const ConfiguratorPage = () => {
   const hasLoaded = useThreekitInitStatus();
   const configuratorView = useAppSelector(getConfiguratorView);
   const isLoadedIframePlayer = useAppSelector(getIsLoadedIframePlayer);
+  const isLoaded = hasLoaded && isLoadedIframePlayer;
 
   useEffect;
 
   return (
     <div className={s.configuratorPage}>
       <div className={s.playerContent}>
-        {(!isLoadedIframePlayer || !hasLoaded) && <PlayerLoader />}
+        {!isLoaded && <PlayerLoader />}
         <div className={s.playerWrap}>
           <div className={`${s.webglWrap} ${configuratorView === "2D" ? s.hided : ""}`}>
             <Player />
@@ -40,7 +41,7 @@ export const ConfiguratorPage = () => {
             </div>
           </div>
         </div>
-        <div className={s.sliderWrap}>{hasLoaded && <PhotoSlider />}</div>
+        <div className={s.sliderWrap}>{isLoaded && <PhotoSlider />}</div>
 
         {/* {configuratorView === "3D" ? (
           <Player />

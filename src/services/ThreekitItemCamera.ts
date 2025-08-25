@@ -61,25 +61,41 @@ export class ThreekitItemCamera {
     // 8 - top camera (if available)
     // 9 - dimension camera (if available)
     // If top or dimension camera is not available, it is not included in the slider
-    const sliderCameras: number[] = this.get360CamerasList();
+    const sliderCameras: number[] = [];
 
-    // Центральна камера
+    const cam1Meta = this.meta["Camera_1"];
+    const cam1Value = parseInt(cam1Meta, 10);
+    if (!isNaN(cam1Value)) sliderCameras.push(cam1Value);
+
+    const cam2Meta = this.meta["Camera_2"];
+    const cam2Value = parseInt(cam2Meta, 10);
+    if (!isNaN(cam2Value)) sliderCameras.push(cam2Value);
+
+    const cam3Meta = this.meta["Camera_3"];
+    const cam3Value = parseInt(cam3Meta, 10);
+    if (!isNaN(cam3Value)) sliderCameras.push(cam3Value);
+
+    const cam4Meta = this.meta["Camera_4"];
+    const cam4Value = parseInt(cam4Meta, 10);
+    if (!isNaN(cam4Value)) sliderCameras.push(cam4Value);
+
+    // // Центральна камера
     // sliderCameras.push(this.getCentralCamera());
 
-    // Кутова камера
+    // // Кутова камера
     // sliderCameras.push(this.getAngleCamera());
 
-    // Top камера (якщо доступна)
+    // // Top камера (якщо доступна)
     // const topCamera = this.getTopCameraValue();
     // if (topCamera !== undefined) {
     //   sliderCameras.push(topCamera);
     // }
 
-    // Dimension камера (якщо доступна)
-    const dimensionCamera = this.getDimensionCameraValue();
-    if (dimensionCamera !== undefined) {
-      sliderCameras.push(dimensionCamera);
-    }
+    // // Dimension камера (якщо доступна)
+    // const dimensionCamera = this.getDimensionCameraValue();
+    // if (dimensionCamera !== undefined) {
+    //   sliderCameras.push(dimensionCamera);
+    // }
 
     return sliderCameras;
   }

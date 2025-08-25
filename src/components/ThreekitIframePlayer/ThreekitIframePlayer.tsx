@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef } from "react";
 import { getAssetIdByProductsConfig } from "../../utils/getAssetIdByProductsConfig";
 import { useAppDispatch } from "../../store/store";
-import { changeIsLoadedIframePlayer } from "../../store/slices/configurator/Configurator.sclice";
+import { changeIsLoadedIframePlayer, setStageCamera } from "../../store/slices/configurator/Configurator.sclice";
 
 export type ThreekitIframePlayerProps = {
   style?: React.CSSProperties;
@@ -18,7 +18,7 @@ declare global {
 /** Типи повідомлень від iframe */
 export type IframeToParentMsg =
   | { type: "READY" }
-  | { type: "WINDOW_POINTS_UPDATED"; payload: { points: [number, number][] } }
+  | { type: "TK_STAGE_CAMERA"; payload: number }
   | { type: "CUSTOM"; payload: unknown };
 
 export function ThreekitIframePlayer({ assetId: assetIdProp, style, className }: any) {
@@ -62,14 +62,12 @@ export function ThreekitIframePlayer({ assetId: assetIdProp, style, className }:
       // 5) Власна обробка типових подій
       switch (data.type) {
         case "READY":
-          // eslint-disable-next-line no-console
           dispatch(changeIsLoadedIframePlayer(true));
           break;
 
-        case "WINDOW_POINTS_UPDATED":
-          // eslint-disable-next-line no-console
-          console.log("[Parent] points: ====", data.payload.points);
-          // тут можеш диспатчити в redux / оновлювати стейт
+        case "TK_STAGE_CAMERA":
+          console.log("data.payload --- ==== ", data.payload);
+          dispatch(setStageCamera(data.payload));
           break;
 
         case "CUSTOM":

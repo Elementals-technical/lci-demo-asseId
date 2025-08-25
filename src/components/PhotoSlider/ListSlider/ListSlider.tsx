@@ -5,6 +5,10 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import { ThreekitItemCamera } from "../../../services/ThreekitItemCamera";
+import { getIftameStageConfigurator } from "../../../utils/threekit/iframeStageConfigurator";
+import { useAppDispatch, useAppSelector } from "../../../store/store";
+import { getConfiguratorView, getStageCamera } from "../../../store/slices/configurator/selectors/selectors";
+import { changeСonfiguratorView, setStageCamera } from "../../../store/slices/configurator/Configurator.sclice";
 
 interface ImageData {
   url: string;
@@ -23,6 +27,9 @@ export const ListSlider: React.FC<ListSliderProps> = ({ listAttribute, onSelectI
   // let stageCamera = useStoreSelector(getStageCamera);
   const swiperRef = useRef<any>(null);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
+  const configuratorView = useAppSelector(getConfiguratorView);
+  const currentStageCamera = useAppSelector(getStageCamera);
+  const dispatch = useAppDispatch();
   // const confStageIframe = await window.iframePlayer.current.contentWindow.player.getStageConfigurator()
 
   // const zoomActive = useStoreSelector(getZoomActive);
@@ -82,8 +89,16 @@ export const ListSlider: React.FC<ListSliderProps> = ({ listAttribute, onSelectI
   const onSelectCamera = (value: number | string, source: string, index: number, url: string) => {
     console.log("Image clicked: ====", { value, source, index, url });
 
+    if (configuratorView === "3D") dispatch(changeСonfiguratorView("2D"));
+
     // Set the selected index for active state
     setSelectedIndex(index);
+
+    const iframeStageConfigurator = getIftameStageConfigurator();
+    iframeStageConfigurator?.setConfiguration({
+      Camera: value,
+    });
+    dispatch(setStageCamera(Number(value)));
 
     // dispatch(setActiveZoomPhoto({ value, source, index, url }));
     // // Only dispatch camera change for Threekit images (numeric cameras)
@@ -128,7 +143,10 @@ export const ListSlider: React.FC<ListSliderProps> = ({ listAttribute, onSelectI
 
           // Set active class based on selected index
           let classWrap = `${s.wrap}`;
-          if (selectedIndex === index) {
+          // if (selectedIndex === index) {
+          //   classWrap += ` ${s.active}`;
+          // }
+          if (String(currentStageCamera) === String(data.camera)) {
             classWrap += ` ${s.active}`;
           }
 

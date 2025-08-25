@@ -6,25 +6,19 @@ import { load3kit } from "../../utils/threekit/threekitUtils";
 import { THREEKIT_PUBLIC_TOKEN } from "../../config/threekit/threekitConfig";
 import { store, useAppSelector } from "../../store/store";
 import { changeProcessing } from "../../store/slices/configurator/Configurator.sclice";
-import { DISPLAY_OPTIONS } from "@threekit-tools/treble/dist/types";
+import { DISPLAY_OPTIONS, IThreekitConfigurator } from "@threekit-tools/treble/dist/types";
 import { getConfiguratorView } from "../../store/slices/configurator/selectors/selectors";
+import { addCustomTool } from "../../utils/threekit/tools/toolsGeneral";
+import { toolMouseUp } from "../../utils/threekit/tools/toolsMouseUp";
+import { sendToParent } from "../../utils/iframeUtils";
 
 declare global {
   interface Window {
     //@ts-ignore
     threekitPlayer?: (opts: Record<string, any>) => Promise<any>;
     player?: any;
+    tkStageConfigurator?: IThreekitConfigurator;
   }
-}
-
-export type IframeToParentMsg =
-  | { type: "WINDOW_POINTS_UPDATED"; payload: { points: [number, number][] } }
-  | { type: "READY" };
-
-function sendToParent(msg: IframeToParentMsg) {
-  // якщо той самий сайт/домен:
-  const targetOrigin = window.location.origin;
-  window.parent.postMessage(msg, targetOrigin);
 }
 
 const IframePlayerPage: React.FC = () => {
@@ -80,9 +74,16 @@ const IframePlayerPage: React.FC = () => {
 
         apiRef.current = api;
         window.player = api;
+        window.tkStageConfigurator = await api.getStageConfigurator();
         lastAssetIdRef.current = assetId;
         // console.log("Threekit initialized for", assetId);
         sendToParent({ type: "READY" });
+        sendToParent({
+          type: "TK_STAGE_CAMERA",
+          payload: Number(window.tkStageConfigurator.getConfiguration()?.["Camera"]),
+        });
+
+        addCustomTool(toolMouseUp());
       } catch (e) {
         console.error("Threekit init failed", e);
       } finally {

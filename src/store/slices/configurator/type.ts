@@ -3,4 +3,5 @@ export interface ConfiguratorStateI {
   isProcessing: boolean;
   configuratorView: ConfiguratorType;
   isLoadedIframePlayer: boolean;
+  stageCamera: number;
 }
