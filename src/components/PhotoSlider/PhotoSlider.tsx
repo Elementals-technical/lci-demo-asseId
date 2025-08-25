@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { usePhotoGallery } from "../../hooks/usePhotoThreekit";
 import { useFilteredConfig, waitThreekitConfiguratorReady } from "../../hooks/useFilteredConfig";
 import { ThreekitItemCamera } from "../../services/ThreekitItemCamera";
+import { ListSlider } from "./ListSlider/ListSlider";
 
 const getThreekitSliderCameras = async (): Promise<number[]> => {
   await waitThreekitConfiguratorReady({
@@ -44,7 +45,6 @@ export const PhotoSlider = (/*{ onSelectImage }*/) => {
       setCameras(sliderCam);
     })();
   }, []);
-  debugger;
 
   const { threekitImages } = usePhotoGallery({
     configuration: {
@@ -171,27 +171,30 @@ export const PhotoSlider = (/*{ onSelectImage }*/) => {
   //   setDialogOpen(true);
   // };
 
+  const onSelectImage = () => {
+    console.log("onSelectImage --- ==== ");
+  };
+
   return (
     <div className="w-full">
-      Slider
-      {/* {galleryReady && combinedImages.length > 0 ? (
-        <>
-          <ListSlider
-            listAttribute={combinedImages}
-            onSelectImage={onSelectImage}
-            onOpenLightbox={(index) => {
-              const threekitLength = threekitImages.length;
-              if (index >= threekitLength) {
-                handleOpenLightbox(index);
-              }
-            }}
-          />
-        </>
-      ) : (
-        <>
-          <Skeleton className="h-[9rem] md:h-[12rem] w-full" />
-        </>
-      )} */}
+      {
+        /*galleryReady && */ threekitImages.length > 0 ? (
+          <>
+            <ListSlider
+              listAttribute={threekitImages}
+              onSelectImage={onSelectImage}
+              // onOpenLightbox={(index) => {
+              //   const threekitLength = threekitImages.length;
+              //   if (index >= threekitLength) {
+              //     handleOpenLightbox(index);
+              //   }
+              // }}
+            />
+          </>
+        ) : (
+          <>{/* <Skeleton className="h-[9rem] md:h-[12rem] w-full" /> */}</>
+        )
+      }
     </div>
   );
 };

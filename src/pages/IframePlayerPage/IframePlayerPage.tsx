@@ -6,6 +6,7 @@ import { load3kit } from "../../utils/threekit/threekitUtils";
 import { THREEKIT_PUBLIC_TOKEN } from "../../config/threekit/threekitConfig";
 import { store } from "../../store/store";
 import { changeProcessing } from "../../store/slices/configurator/Configurator.sclice";
+import { DISPLAY_OPTIONS } from "@threekit-tools/treble/dist/types";
 
 declare global {
   interface Window {
@@ -62,6 +63,7 @@ const IframePlayerPage: React.FC = () => {
           showShare: true,
           showLoadingThumbnail: false,
           publishStage: "draft",
+          display: DISPLAY_OPTIONS.IMAGE,
           // showConfigurator: true, // если нужно
         });
 
@@ -89,7 +91,7 @@ const IframePlayerPage: React.FC = () => {
   return (
     <div className={s.wrap}>
       <div id="player" className={s.player} ref={playerEl}></div>
-
+      <PlayerWidgets />
       {/* Можно показать индикатор во время переинициализации */}
       {initializing && <div className={s.loadingOverlay}>Loading...</div>}
     </div>

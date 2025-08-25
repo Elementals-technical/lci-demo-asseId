@@ -1,3 +1,4 @@
+import { useThreekitInitStatus } from "@threekit-tools/treble/dist";
 import React, { useEffect, useRef } from "react";
 
 export type ThreekitIframePlayerProps = {
@@ -7,6 +8,7 @@ export type ThreekitIframePlayerProps = {
 };
 
 export function ThreekitIframePlayer({ assetId, style, className }: any) {
+  const hasLoaded = useThreekitInitStatus();
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
   useEffect(() => {
@@ -14,12 +16,14 @@ export function ThreekitIframePlayer({ assetId, style, className }: any) {
     window.iframePlayer = iframeRef;
   }, []);
 
+  if (!hasLoaded) return null;
+
   return (
     <iframe
       id="tk-iframe-player"
       ref={iframeRef}
       title="threekit-iframe-player"
-      src={window.location.origin + `/iframe?assetId=${assetId}`}
+      src={window.location.origin + `/iframe?assetId=${window.threekit.player.assetId}`}
       style={{ width: "100%", height: "100%", border: 0, background: "#fff", ...style }}
       className={className}
       allow="fullscreen; autoplay; xr-spatial-tracking; camera; microphone"

@@ -47,7 +47,6 @@ function buildThreekitImages(params: {
       configuration,
       stageConfiguration: { Camera: camera },
     });
-    debugger;
     return {
       url: generator.generateURL(),
       camera: camera.toString(),

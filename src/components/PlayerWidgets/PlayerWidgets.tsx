@@ -10,7 +10,6 @@ export const PlayerWidgets: React.FC = () => {
   if (!hasLoaded) return null;
   return (
     <>
-      <PlayerWidgetBottomLeft />
       <PlayerWidgetBottomCenter />
       <PlayerWidgetBottomRight />
     </>

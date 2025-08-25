@@ -1,0 +1,161 @@
+import React, { useRef, useState, useEffect } from "react";
+import s from "./../PhotoSlider.module.scss";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+
+interface ImageData {
+  url: string;
+  camera: number | string;
+  source?: string;
+  id?: string;
+}
+
+interface ListSliderProps {
+  listAttribute: ImageData[];
+  onSelectImage?: (image: ImageData) => void;
+  onOpenLightbox?: (index: number) => void;
+}
+
+export const ListSlider: React.FC<ListSliderProps> = ({ listAttribute, onSelectImage, onOpenLightbox }) => {
+  // let stageCamera = useStoreSelector(getStageCamera);
+  const swiperRef = useRef<any>(null);
+  const [selectedIndex, setSelectedIndex] = useState<number>(0);
+
+  // const zoomActive = useStoreSelector(getZoomActive);
+
+  // const dispatch = useStoreDispatch();
+
+  // Set initial active zoom photo when images are loaded
+  // useEffect(() => {
+  //   if (listAttribute.length > 0) {
+  //     const firstImage = listAttribute[0];
+  //     if (firstImage) {
+  //       // Set the first image as active zoom photo for initial state
+  //       dispatch(
+  //         setActiveZoomPhoto({
+  //           value: firstImage.camera,
+  //           source: firstImage.source || "threekit",
+  //           index: 0,
+  //           url: firstImage.url,
+  //         })
+  //       );
+  //     }
+  //   }
+  // }, [listAttribute, dispatch]);
+
+  // Update selectedIndex when stageCamera changes (including when DimensionIcon is clicked)
+  // useEffect(() => {
+  //   if (listAttribute.length > 0 && window.configurator?.getMetadata) {
+  //     const threekitItemCamera = new ThreekitItemCamera(window.configurator.getMetadata(), 0);
+  //     const dimensionCameraValue = threekitItemCamera.getDimensionCameraValue();
+
+  //     if (dimensionCameraValue && stageCamera === dimensionCameraValue) {
+  //       // Find dimension camera number
+  //       const matchingIndex = listAttribute.findIndex(
+  //         (item) => item.source === "threekit" && item.camera === `${dimensionCameraValue}`
+  //       );
+  //       debugger;
+
+  //       if (matchingIndex !== -1) {
+  //         setSelectedIndex(matchingIndex);
+  //         // Also update active zoom photo when dimension camera changes
+  //         const matchingImage = listAttribute[matchingIndex];
+  //         dispatch(
+  //           setActiveZoomPhoto({
+  //             value: matchingImage.camera,
+  //             source: matchingImage.source || "threekit",
+  //             index: matchingIndex,
+  //             url: matchingImage.url,
+  //           })
+  //         );
+  //       }
+  //     }
+  //   }
+  // }, [stageCamera, listAttribute, dispatch]);
+
+  const onSelectCamera = (value: number | string, source: string, index: number, url: string) => {
+    console.log("Image clicked: ====", { value, source, index, url });
+
+    // Set the selected index for active state
+    // setSelectedIndex(index);
+
+    // dispatch(setActiveZoomPhoto({ value, source, index, url }));
+    // // Only dispatch camera change for Threekit images (numeric cameras)
+    // if (source !== "hubspot") {
+    //   dispatch(setStageCamera(value));
+    //   // if (onSelectImage && index < listAttribute.length) {
+    //   //   onSelectImage(listAttribute[index]);
+    //   // }
+    // } else if (source === "hubspot" && onOpenLightbox && !zoomActive) {
+    //   // Open lightbox for Hubspot images
+    //   console.log("Opening lightbox for Hubspot image at index:", index);
+    //   onOpenLightbox(index);
+    // }
+  };
+
+  return (
+    <div className={s.sliderContainer}>
+      <Swiper
+        ref={swiperRef}
+        modules={[Navigation]}
+        spaceBetween={8}
+        slidesPerView={3.7}
+        breakpoints={{
+          992: {
+            slidesPerView: 4.7,
+            spaceBetween: 12,
+          },
+        }}
+        navigation
+        className={s.swiperContainer}
+        key={`swiper-${listAttribute.length}`}
+        observer={true}
+        observeParents={true}
+      >
+        {listAttribute.map((data, index) => {
+          const url = data.url;
+          const camera = data.camera;
+          const source = data.source || "threekit";
+
+          // Determine if this is a Threekit or HubSpot image
+          const isThreekit = source === "threekit";
+
+          // Set active class based on selected index
+          let classWrap = `${s.wrap}`;
+          if (selectedIndex === index) {
+            classWrap += ` ${s.active}`;
+          }
+
+          return (
+            <SwiperSlide key={isThreekit ? `threekit-${camera}` : `hubspot-${data.id || index}`}>
+              <div
+                className={`${classWrap} ${!isThreekit ? s.hubImg : ""}`}
+                onClick={() => onSelectCamera(camera, source, index, url)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    onSelectCamera(camera, source, index, url);
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+                aria-label={isThreekit ? `Camera view ${camera}` : "View in lightbox"}
+                data-source={source}
+                data-index={index}
+              >
+                <img
+                  src={url}
+                  alt={isThreekit ? `Camera ${camera}` : "Additional product image"}
+                  className={s.thumbnail}
+                  loading="lazy"
+                />
+                {!isThreekit && <div className={s.lightboxIcon}>+</div>}
+              </div>
+            </SwiperSlide>
+          );
+        })}
+      </Swiper>
+    </div>
+  );
+};
