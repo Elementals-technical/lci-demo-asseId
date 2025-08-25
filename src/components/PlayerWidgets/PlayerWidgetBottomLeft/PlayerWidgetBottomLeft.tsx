@@ -11,7 +11,6 @@ export const PlayerWidgetBottomLeft = () => {
   const configuratorView = useAppSelector(getConfiguratorView);
 
   const handleChangeView = () => {
-    console.log("handleChangeView --- ==== ", handleChangeView);
     const value: ConfiguratorType = configuratorView === "2D" ? "3D" : "2D";
     dispatch(changeСonfiguratorView(value));
   };

@@ -49,13 +49,7 @@ export const PhotoSlider = (/*{ onSelectImage }*/) => {
   }, []);
 
   const { threekitImages } = usePhotoGallery({
-    configuration: {
-      "Set Color": "",
-      "Open/Close": false,
-      explode: false,
-      Model: "Lippert_RV_Baggage_Door",
-      start_script: true,
-    },
+    configuration: window.threekit.configurator.getConfiguration(),
     cameras,
     // preload: true,
   });

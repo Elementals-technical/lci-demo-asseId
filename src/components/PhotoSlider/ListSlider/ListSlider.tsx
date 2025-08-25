@@ -119,14 +119,14 @@ export const ListSlider: React.FC<ListSliderProps> = ({ listAttribute, onSelectI
       <Swiper
         ref={swiperRef}
         modules={[Navigation]}
-        spaceBetween={8}
-        slidesPerView={3.7}
-        breakpoints={{
-          992: {
-            slidesPerView: 4.7,
-            spaceBetween: 12,
-          },
-        }}
+        spaceBetween={12}
+        slidesPerView={4.7}
+        // breakpoints={{
+        //   992: {
+        //     slidesPerView: 4.7,
+        //     spaceBetween: 12,
+        //   },
+        // }}
         navigation
         className={s.swiperContainer}
         key={`swiper-${listAttribute.length}`}

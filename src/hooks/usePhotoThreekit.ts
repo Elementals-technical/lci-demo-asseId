@@ -34,7 +34,22 @@ function buildThreekitImages(params: {
 }): PhotoImage[] {
   const { productId, orgId, stageId, authToken, cameras, configuration } = params;
 
-  return cameras.map((camera): PhotoImage => {
+  return cameras.map((camera, index): PhotoImage => {
+    // ХАРДКОД для ДЕМО [START]
+
+    const formattedConfig = { ...configuration };
+    const booleanAttrs = ["Open/Closed", "Open/Closed Window 1"];
+    if (index === 2) {
+      booleanAttrs.forEach((attr) => {
+        if (attr in formattedConfig) {
+          formattedConfig[attr] = true;
+        }
+      });
+    }
+
+    console.log("formattedConfig --- ==== ", formattedConfig);
+    // ХАРДКОД для ДЕМО [END]
+
     const generator = new ThreekitURLGenerator({
       assetId: productId,
       orgId,
@@ -44,7 +59,7 @@ function buildThreekitImages(params: {
       // height: 2500,
       width: 2500,
       format: "jpg",
-      configuration,
+      configuration: formattedConfig,
       stageConfiguration: { Camera: camera },
     });
     return {
@@ -101,6 +116,7 @@ export const usePhotoGallery = (options: UsePhotoGalleryOptions = {}): UsePhotoG
       const stageId = metadata.getStageId();
 
       console.log("stageId --- ==== ", stageId);
+      console.log("configuration --- ==== ", configuration);
 
       if (stageId && THREEKIT_PARAMS.TOKEN && cameras && THREEKIT_PARAMS.ORG_ID) {
         // URL generation
