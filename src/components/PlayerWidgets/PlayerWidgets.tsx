@@ -5,11 +5,12 @@ import { PlayerWidgetBottomRight } from "./PlayerWidgetBottomRight/PlayerWidgetB
 import { PlayerWidgetBottomCenter } from "./PlayerWidgetBottomCenter/PlayerWidgetBottomCenter";
 
 export const PlayerWidgets: React.FC = () => {
-  const hasLoaded = useThreekitInitStatus();
+  // const hasLoaded = useThreekitInitStatus();
 
-  if (!hasLoaded) return null;
+  // if (!hasLoaded) return null;
   return (
     <>
+      {/* <PlayerWidgetBottomLeft /> */}
       <PlayerWidgetBottomCenter />
       <PlayerWidgetBottomRight />
     </>

@@ -4,6 +4,7 @@ import { ConfiguratorStateI, ConfiguratorType } from "./type";
 const initialState: ConfiguratorStateI = {
   isProcessing: false,
   configuratorView: "2D",
+  isLoadedIframePlayer: false,
 };
 
 export const configuratorSlice = createSlice({
@@ -16,9 +17,12 @@ export const configuratorSlice = createSlice({
     changeСonfiguratorView: (state, action: PayloadAction<ConfiguratorType>) => {
       state.configuratorView = action.payload;
     },
+    changeIsLoadedIframePlayer: (state, action: PayloadAction<boolean>) => {
+      state.isLoadedIframePlayer = action.payload;
+    },
   },
 });
 
-export const { changeProcessing, changeСonfiguratorView } = configuratorSlice.actions;
+export const { changeProcessing, changeСonfiguratorView, changeIsLoadedIframePlayer } = configuratorSlice.actions;
 
 export default configuratorSlice.reducer;

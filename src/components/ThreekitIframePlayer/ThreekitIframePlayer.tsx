@@ -1,5 +1,7 @@
-import { useThreekitInitStatus } from "@threekit-tools/treble/dist";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
+import { getAssetIdByProductsConfig } from "../../utils/getAssetIdByProductsConfig";
+import { useAppDispatch } from "../../store/store";
+import { changeIsLoadedIframePlayer } from "../../store/slices/configurator/Configurator.sclice";
 
 export type ThreekitIframePlayerProps = {
   style?: React.CSSProperties;
@@ -7,28 +9,95 @@ export type ThreekitIframePlayerProps = {
   assetId: string;
 };
 
-export function ThreekitIframePlayer({ assetId, style, className }: any) {
-  const hasLoaded = useThreekitInitStatus();
+declare global {
+  interface Window {
+    iframePlayer?: React.RefObject<HTMLIFrameElement>;
+  }
+}
+
+/** Типи повідомлень від iframe */
+export type IframeToParentMsg =
+  | { type: "READY" }
+  | { type: "WINDOW_POINTS_UPDATED"; payload: { points: [number, number][] } }
+  | { type: "CUSTOM"; payload: unknown };
+
+export function ThreekitIframePlayer({ assetId: assetIdProp, style, className }: any) {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    //@ts-ignore
+    // @ts-ignore
     window.iframePlayer = iframeRef;
   }, []);
 
-  if (!hasLoaded) return null;
+  const resolvedAssetId = assetIdProp ?? getAssetIdByProductsConfig();
+  const src = (() => {
+    if (!resolvedAssetId) return "";
+    const url = new URL("/iframe", window.location.origin);
+    url.searchParams.set("assetId", resolvedAssetId);
+    return url.toString();
+  })();
+
+  // ===== Прийом повідомлень від iframe =====
+  useEffect(() => {
+    if (!iframeRef.current) return;
+
+    const handler = (e: MessageEvent) => {
+      // 1) Перевірка походження
+      if (e.origin !== window.location.origin) return;
+
+      // 2) Переконатися, що це саме наше iframe
+      const cw = iframeRef.current?.contentWindow;
+      if (cw && e.source !== cw) return;
+
+      // 3) Переконатися, що формат повідомлення наш
+      const data = e.data as IframeToParentMsg | undefined;
+      if (!data || typeof (data as any).type !== "string") return;
+
+      // 4) Користувацький хендлер (опційний)
+      // if (onIframeMessage) {
+      //   onIframeMessage(data, e);
+      // }
+
+      // 5) Власна обробка типових подій
+      switch (data.type) {
+        case "READY":
+          // eslint-disable-next-line no-console
+          dispatch(changeIsLoadedIframePlayer(true));
+          break;
+
+        case "WINDOW_POINTS_UPDATED":
+          // eslint-disable-next-line no-console
+          console.log("[Parent] points: ====", data.payload.points);
+          // тут можеш диспатчити в redux / оновлювати стейт
+          break;
+
+        case "CUSTOM":
+          // eslint-disable-next-line no-console
+          console.log("[Parent] custom payload: ====", data.payload);
+          break;
+
+        default:
+          // невідомий тип – ігноруємо
+          break;
+      }
+    };
+
+    window.addEventListener("message", handler);
+    return () => window.removeEventListener("message", handler);
+  }, []);
+
+  if (!resolvedAssetId) return null;
 
   return (
     <iframe
       id="tk-iframe-player"
       ref={iframeRef}
       title="threekit-iframe-player"
-      src={window.location.origin + `/iframe?assetId=${window.threekit.player.assetId}`}
+      src={src}
       style={{ width: "100%", height: "100%", border: 0, background: "#fff", ...style }}
       className={className}
       allow="fullscreen; autoplay; xr-spatial-tracking; camera; microphone"
     />
   );
 }
-
-export default ThreekitIframePlayer;

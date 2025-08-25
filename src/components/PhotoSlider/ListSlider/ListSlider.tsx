@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import { ThreekitItemCamera } from "../../../services/ThreekitItemCamera";
 
 interface ImageData {
   url: string;
@@ -22,6 +23,7 @@ export const ListSlider: React.FC<ListSliderProps> = ({ listAttribute, onSelectI
   // let stageCamera = useStoreSelector(getStageCamera);
   const swiperRef = useRef<any>(null);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
+  // const confStageIframe = await window.iframePlayer.current.contentWindow.player.getStageConfigurator()
 
   // const zoomActive = useStoreSelector(getZoomActive);
 
@@ -47,8 +49,10 @@ export const ListSlider: React.FC<ListSliderProps> = ({ listAttribute, onSelectI
 
   // Update selectedIndex when stageCamera changes (including when DimensionIcon is clicked)
   // useEffect(() => {
-  //   if (listAttribute.length > 0 && window.configurator?.getMetadata) {
-  //     const threekitItemCamera = new ThreekitItemCamera(window.configurator.getMetadata(), 0);
+  //   // @ts-ignore
+  //   if (listAttribute.length > 0 && window.threekit.configurator.getMetadata) {
+  //     // @ts-ignore
+  //     const threekitItemCamera = new ThreekitItemCamera(window.threekit.configurator.getMetadata());
   //     const dimensionCameraValue = threekitItemCamera.getDimensionCameraValue();
 
   //     if (dimensionCameraValue && stageCamera === dimensionCameraValue) {
@@ -79,7 +83,7 @@ export const ListSlider: React.FC<ListSliderProps> = ({ listAttribute, onSelectI
     console.log("Image clicked: ====", { value, source, index, url });
 
     // Set the selected index for active state
-    // setSelectedIndex(index);
+    setSelectedIndex(index);
 
     // dispatch(setActiveZoomPhoto({ value, source, index, url }));
     // // Only dispatch camera change for Threekit images (numeric cameras)

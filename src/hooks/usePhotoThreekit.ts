@@ -41,7 +41,7 @@ function buildThreekitImages(params: {
       stageId,
       bearer_token: authToken,
       display: "image",
-      height: 2500,
+      // height: 2500,
       width: 2500,
       format: "jpg",
       configuration,

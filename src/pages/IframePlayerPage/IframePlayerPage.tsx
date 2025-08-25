@@ -4,9 +4,10 @@ import s from "./IframePlayerPage.module.scss";
 import { PlayerWidgets } from "../../components/PlayerWidgets/PlayerWidgets";
 import { load3kit } from "../../utils/threekit/threekitUtils";
 import { THREEKIT_PUBLIC_TOKEN } from "../../config/threekit/threekitConfig";
-import { store } from "../../store/store";
+import { store, useAppSelector } from "../../store/store";
 import { changeProcessing } from "../../store/slices/configurator/Configurator.sclice";
 import { DISPLAY_OPTIONS } from "@threekit-tools/treble/dist/types";
+import { getConfiguratorView } from "../../store/slices/configurator/selectors/selectors";
 
 declare global {
   interface Window {
@@ -14,6 +15,16 @@ declare global {
     threekitPlayer?: (opts: Record<string, any>) => Promise<any>;
     player?: any;
   }
+}
+
+export type IframeToParentMsg =
+  | { type: "WINDOW_POINTS_UPDATED"; payload: { points: [number, number][] } }
+  | { type: "READY" };
+
+function sendToParent(msg: IframeToParentMsg) {
+  // якщо той самий сайт/домен:
+  const targetOrigin = window.location.origin;
+  window.parent.postMessage(msg, targetOrigin);
 }
 
 const IframePlayerPage: React.FC = () => {
@@ -35,12 +46,10 @@ const IframePlayerPage: React.FC = () => {
 
   // Переинициализация при изменении assetId (и когда скрипт загружен)
   useEffect(() => {
-    console.log("111111 --- ==== ");
     if (!loadedScript) return;
     if (!assetId) return;
     if (!window.threekitPlayer) return;
     if (!playerEl.current) return;
-    console.log("dddddddd --- ==== ");
 
     // если уже инициализирован на этот же asset — ничего не делаем
     if (lastAssetIdRef.current === assetId) return;
@@ -73,6 +82,7 @@ const IframePlayerPage: React.FC = () => {
         window.player = api;
         lastAssetIdRef.current = assetId;
         // console.log("Threekit initialized for", assetId);
+        sendToParent({ type: "READY" });
       } catch (e) {
         console.error("Threekit init failed", e);
       } finally {

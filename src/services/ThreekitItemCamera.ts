@@ -32,6 +32,7 @@ export class ThreekitItemCamera {
   // 🎯 private method - returns the central camera from the 360 cameras list
   private getCentralCamera(): number {
     const cameras360 = this.get360CamerasList();
+    console.log("cameras360 --- ==== ", cameras360);
     const middleIndex = Math.floor(cameras360.length / 2);
     return cameras360[middleIndex];
   }
@@ -60,19 +61,19 @@ export class ThreekitItemCamera {
     // 8 - top camera (if available)
     // 9 - dimension camera (if available)
     // If top or dimension camera is not available, it is not included in the slider
-    const sliderCameras: number[] = [];
+    const sliderCameras: number[] = this.get360CamerasList();
 
     // Центральна камера
-    sliderCameras.push(this.getCentralCamera());
+    // sliderCameras.push(this.getCentralCamera());
 
     // Кутова камера
-    sliderCameras.push(this.getAngleCamera());
+    // sliderCameras.push(this.getAngleCamera());
 
     // Top камера (якщо доступна)
-    const topCamera = this.getTopCameraValue();
-    if (topCamera !== undefined) {
-      sliderCameras.push(topCamera);
-    }
+    // const topCamera = this.getTopCameraValue();
+    // if (topCamera !== undefined) {
+    //   sliderCameras.push(topCamera);
+    // }
 
     // Dimension камера (якщо доступна)
     const dimensionCamera = this.getDimensionCameraValue();

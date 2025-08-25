@@ -1,4 +1,21 @@
-export const productsLippert = {
+// Окремий тип для джерела (ключів усередині продукту)
+export type ProductSource = "preview" | "admin-fts";
+
+// Окремий тип для об’єкта з assetId
+interface ProductAsset {
+  assetId: string;
+}
+
+// Тип для кожного продукту
+interface ProductEntry {
+  preview: ProductAsset;
+  "admin-fts": ProductAsset;
+}
+
+// Тип для всього productsLippert
+type ProductsLippert = Record<string, ProductEntry>;
+
+export const productsLippert: ProductsLippert = {
   Trailer_Axle: {
     preview: {
       assetId: "2e973f25-8ebe-46bd-ab37-61f676ddc196",

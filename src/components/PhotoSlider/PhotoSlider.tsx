@@ -20,7 +20,7 @@ const getThreekitSliderCameras = async (): Promise<number[]> => {
   // Generate Threekit camera views
   const cameraNumbers = await threekitItemCamera.getSliderCameras();
 
-  return cameraNumbers;
+  return cameraNumbers.slice(0, 4);
 };
 
 export const PhotoSlider = (/*{ onSelectImage }*/) => {
@@ -41,6 +41,8 @@ export const PhotoSlider = (/*{ onSelectImage }*/) => {
     (async () => {
       const sliderCam = await getThreekitSliderCameras();
       // const sliderCam = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+
+      console.log("sliderCam --- ==== ", sliderCam);
 
       setCameras(sliderCam);
     })();

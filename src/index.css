@@ -13,3 +13,10 @@ body {
   user-select: none;
   visibility: hidden;
 }
+
+.threekit-react.tk-player {
+  min-height: auto;
+  > div:nth-child(1) {
+    min-height: auto;
+  }
+}
